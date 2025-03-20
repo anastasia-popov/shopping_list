@@ -24,8 +24,10 @@ h2 {
     display: flex;
     align-items: center;
     padding: 5px;
-    border-bottom: 1px solid #004d40;
     background: #b2dfdb;
+    margin-bottom: 5px;
+    margin-left: 15px;
+    color: #000000
 }
 .item input {
     margin-right: 10px;
