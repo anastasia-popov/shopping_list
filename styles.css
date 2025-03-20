@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 10px;
+    background: #e0f7f7;
+    color: #00796b;
+}
+h2 {
+    text-align: center;
+    color: #004d40;
+}
+.aisle {
+    margin-bottom: 10px;
+}
+.aisle h3 {
+    margin: 5px 0;
+    background: #80cbc4;
+    padding: 5px;
+    border-radius: 5px;
+    color: #004d40;
+}
+.item {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-bottom: 1px solid #004d40;
+    background: #b2dfdb;
+}
+.item input {
+    margin-right: 10px;
+}
+.bought {
+    text-decoration: line-through;
+    color: #004d40;
+    background: #e0f2f1;
+}
+#bought-list {
+    margin-top: 20px;
+    padding: 10px;
+    background: #b2dfdb;
+    border-radius: 5px;
+    color: #004d40;
+}
