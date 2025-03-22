@@ -9,8 +9,7 @@ function login() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
     })
-    .then(response => response.json())
-    .then(window.location.href = '/shopping-list.html');
+    .then(response => response.status === 200 ? window.location.href = '/shopping-list.html' : response.json());
 }
 
 function register() {
@@ -31,5 +30,5 @@ function provider(provider) {
 
 document.getElementById('login-button').addEventListener('click', login);
 
-document.getElementById('register-button').addEventListener('click', register);
+//document.getElementById('register-button').addEventListener('click', register);
 
