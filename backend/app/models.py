@@ -20,3 +20,13 @@ class Department(db.Model):
 
     def __repr__(self):
         return f'<Department {self.name}>'
+        
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    department_id = db.Column(db.Integer, db.ForeignKey('department.id'), nullable=False)
+
+    department = db.relationship('Department', backref=db.backref('products', lazy=True))
+
+    def __repr__(self):
+        return f'<Product {self.name} (Department ID: {self.department_id})>'
