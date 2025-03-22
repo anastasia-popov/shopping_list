@@ -1,7 +1,7 @@
 from flask import request, jsonify, redirect, url_for
 from flask_login import login_user, login_required, logout_user, current_user
 from app import app, db, oauth
-from app.models import User
+from app.models import User, Product, ShoppingList
 
 @app.route('/auth-status', methods=['GET'])
 def auth_status():
@@ -63,4 +63,73 @@ def authorize(provider):
     
     login_user(user)
     return redirect(url_for('get_users'))
+ 
+# Shopping List Endpoints
+@app.route('/shopping-lists', methods=['POST'])
+@login_required
+def create_shopping_list():
+    shopping_list = ShoppingList(user_id=current_user.id)
+    db.session.add(shopping_list)
+    db.session.commit()
+    return jsonify({'message': 'Shopping list created', 'id': shopping_list.id})
+
+@app.route('/shopping-lists/<int:list_id>', methods=['GET'])
+@login_required
+def get_shopping_list(list_id):
+    shopping_list = ShoppingList.query.filter_by(id=list_id, user_id=current_user.id).first_or_404()
+    products = [{
+       'id': p.id,
+       'name': p.name,
+       'department': p.department.name if p.department else None
+    } for p in shopping_list.products]
+    return jsonify({'id': shopping_list.id, 'products': products})
+
+@app.route('/shopping-lists/<int:list_id>/add-product', methods=['POST'])
+@login_required
+def add_product_to_list(list_id):
+    data = request.json
+    product_name = data.get('product_name')
+    if not product_name:
+        return jsonify({'error': 'Missing product_name'}), 400
+
+    normalized_name = product_name.strip().lower()
+
+    shopping_list = ShoppingList.query.filter_by(id=list_id, user_id=current_user.id).first_or_404()
+    product = Product.query.filter(db.func.lower(Product.name) == normalized_name).first()
+
+    if not product:
+        missing_department = Department.query.filter_by(name="missing").first()
+        if not missing_department:
+            missing_department = Department(name="missing")
+            db.session.add(missing_department)
+            db.session.commit()
+
+        product = Product(name=normalized_name, department_id=missing_department.id)
+        db.session.add(product)
+        db.session.commit()
+
+    if product not in shopping_list.products:
+        shopping_list.products.append(product)
+        db.session.commit()
+
+    return jsonify({'message': f"Product '{product.name}' added to shopping list"})
+
+@app.route('/shopping-lists/<int:list_id>/remove-product', methods=['POST'])
+@login_required
+def remove_product_from_list(list_id):
+    data = request.json
+    product_id = data.get('product_id')
+    shopping_list = ShoppingList.query.filter_by(id=list_id, user_id=current_user.id).first_or_404()
+    product = Product.query.get_or_404(product_id)
+    if product in shopping_list.products:
+        shopping_list.products.remove(product)
+        db.session.commit()
+    return jsonify({'message': 'Product removed from shopping list'})
+
+@app.route('/shopping-lists', methods=['GET'])
+@login_required
+def get_all_shopping_lists():
+    lists = ShoppingList.query.filter_by(user_id=current_user.id).all()
+    return jsonify([{'id': l.id, 'product_count': len(l.products)} for l in lists])
+
 
