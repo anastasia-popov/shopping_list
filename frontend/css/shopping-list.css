@@ -44,3 +44,29 @@ h2 {
     border-radius: 5px;
     color: #004d40;
 }
+form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;          
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+form input, form button {
+    padding: 10px;
+    border: 1px solid #00796b;
+    border-radius: 5px;
+    font-size: 1em;
+    flex: 1 1 auto;          
+    min-width: 100px;        
+}
+form button {
+    background-color: #00796b;
+    color: white;
+    cursor: pointer;
+    flex: 0 0 auto;          
+}
+
+form button:hover {
+    background-color: #004d40;
+}

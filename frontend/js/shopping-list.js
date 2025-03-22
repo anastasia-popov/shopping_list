@@ -57,5 +57,25 @@ async function markAsBought(item) {
     fetchShoppingList();
 }
 
+async function addItem(event) {
+    event.preventDefault();
+    const name = document.getElementById('item-name').value.trim();
+    const amount = document.getElementById('item-amount').value.trim();
+
+    if (!name || !amount || !aisle) return;
+
+    await fetch('/api/shopping-list', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ item: name, amount, is_bought: false })
+    });
+
+    document.getElementById('add-item-form').reset();
+    fetchShoppingList();
+}
+
+document.getElementById('add-item-form').addEventListener('submit', addItem);
+
+
 fetchShoppingList();
 
