@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button id="login-button">Login</button>
+        <button id="register-button">Register</button>
+        <hr>
+        <button class="btn-google" onclick="oauthLogin('google')">Login with Google</button>
+        <button class="btn-github" onclick="oauthLogin('github')">Login with GitHub</button>
+        <button class="btn-facebook" onclick="oauthLogin('facebook')">Login with Facebook</button>
+    </div>
+    <script type="module" src="js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<script type="module" src="js/config.js"></script>
+<script type="module">
+import { CONFIG } from './js/config.js';
+
+fetch(`${CONFIG.API_BASE_URL}/auth-status`, {
+  method: 'GET',
+  credentials: 'include', 
+})
+  .then(res => res.json())
+  .then(data => {
+    if (data.authenticated) {
+      window.location.href = '/shopping-list.html'; // Authenticated page
+    } else {
+      window.location.href = '/login.html'; // Login or landing page
+    }
+  })
+  .then(data => console.log(data.authenticated));
+</script>
+

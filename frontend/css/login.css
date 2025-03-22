@@ -1,0 +1,37 @@
+body {
+  font-family: Arial, sans-serif; 
+  text-align: center; 
+  padding: 50px; 
+}
+
+.container { 
+  max-width: 400px; 
+  margin: auto; 
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.btn-google {
+  background-color: #db4437; 
+  color: white; 
+}
+
+.btn-github {
+  background-color: #333; 
+  color: white; 
+}
+
+.btn-facebook {
+  background-color: #3b5998; 
+  color: white; 
+}
