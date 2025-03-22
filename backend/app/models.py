@@ -2,6 +2,8 @@ from app import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
+
 # Association table for many-to-many ShoppingList <-> Product
 shopping_list_product = db.Table('shopping_list_product',
     db.Column('shopping_list_id', db.Integer, db.ForeignKey('shopping_list.id'), primary_key=True),
@@ -13,6 +15,8 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(100), unique=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=True)
+    shopping_list = db.relationship('ShoppingList', uselist=False, back_populates='user')
+
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -37,11 +41,12 @@ class Product(db.Model):
     def __repr__(self):
         return f'<Product {self.name} (Department ID: {self.department_id})>'
        
+
 class ShoppingList(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique=True, nullable=False)
 
-    user = db.relationship('User', backref=db.backref('shopping_lists', lazy=True))
+    user = db.relationship('User', back_populates='shopping_list')
     products = db.relationship('Product', secondary=shopping_list_product, lazy='subquery',
                                backref=db.backref('shopping_lists', lazy=True))
                                
